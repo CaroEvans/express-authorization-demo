@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Cretae an axiost instance
 const api = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: 'https://express-mongo-passport-vzrnynqsds.now.sh'
 })
 
 // Add the bearer token to the axios instance

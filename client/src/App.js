@@ -43,7 +43,7 @@ class App extends Component {
   async componentDidMount() {
     try {
         const bookmarks = await axios.get(
-        'http://localhost:3000/bookmarks'
+        '/bookmarks'
     )
     this.setState( { 
         bookmarks: bookmarks.data,
@@ -58,7 +58,7 @@ class App extends Component {
   remove = (id) => {
     const index = this.state.bookmarks.findIndex(bookmark => bookmark._id === id)
     if (index >= 0) {
-      axios.delete(`http://localhost:3000/bookmarks/${id}`).then( () => {
+      axios.delete(`/bookmarks/${id}`).then( () => {
         const bookmarks = [...this.state.bookmarks]
         bookmarks.splice(index, 1)
         this.setState( { bookmarks })
