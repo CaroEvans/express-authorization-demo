@@ -8,6 +8,7 @@ const jwtAlgorithm = 'HS256'
 const jwtExpiresIn = '6h'
 
 // use static authenticate method of model in LocalStrategy
+//creates an instance of the strategy
 passport.use(User.createStrategy())
 
 // Tell Passport to process JWT
@@ -28,7 +29,7 @@ passport.use(new PassportJwt.Strategy({
 }))
 
 const register = (req, res, next) => {
-  User.register(new User({ email: req.body.email }), req.body.password, (err, user) => {
+  User.register(new User({ email: req.body.email, role: 'admin' }), req.body.password, (err, user) => {
     if (err) {
       return res.status(500).send(err.message);
     }
@@ -59,10 +60,19 @@ const signJwtForUser = (req, res) => {
     res.json({token: token})
 }
 
+const isAdmin = (req, res, next) => {
+  if (req.user.role && req.user.role === 'admin') {
+    next()
+  } else {
+    return res.sendStatus(403)
+  }
+}
+
 module.exports = {
   initializePassport: passport.initialize(),
   requireJwt: passport.authenticate('jwt', { session: false }),
   login: passport.authenticate('local', { session: false }),
   register,
-  signJwtForUser
+  signJwtForUser,
+  isAdmin
 }
