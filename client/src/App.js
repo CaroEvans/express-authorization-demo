@@ -70,10 +70,8 @@ class App extends Component {
     const tokenDetails = this.state.token && decodeJWT(this.state.token)
     // const { bookmarks } = this.state
       return (
+        <Router>
         <div className= "App">
-          <Router>
-            <Fragment>
-
             <nav className= "nav-bar">
               <Link to="/"> Home</Link>&nbsp;&nbsp;
               <Link to="/bookmarks">Bookmarks</Link>&nbsp;&nbsp;
@@ -88,50 +86,36 @@ class App extends Component {
               }}>Log out 
             </button>
 
-            <Route exact path="/" component={ Home } />
-
-            {/* <Route exact path="/bookmarks" render={() => ( <Bookmarks app={this} /> )} />
-
-            <Route path="/bookmarks/:title" render={(routerProps) => {
-              console.log(routerProps.match.params)
-              const index = this.state.bookmarks.findIndex(bookmark => bookmark.title.toUpperCase() === routerProps.match.params.title.toUpperCase())
-              if (index >= 0) {
-                const bm = this.state.bookmarks[index]
-                return ( <Bookmark key={bm._id} {...bm} remove={ this.remove } /> )
-              }
-              return <p>Bookmark not found</p>
-            }} /> */}
-          </ Fragment>
-        </ Router>
-
         { 
           this.state.token ? (
             <div>
             <h4>Welcome { tokenDetails.email }</h4>
             <p>You logged in on: {new Date(tokenDetails.iat * 1000).toLocaleString() }</p>
             <p>Your token expires on: {new Date(tokenDetails.exp * 1000).toLocaleString() }</p>
-              <Router>
-              <Fragment>
-
-                <Route exact path="/bookmarks" render={() => ( <Bookmarks app={this} /> )} />
-
-                <Route path="/bookmarks/:title" render={(routerProps) => {
-                  console.log(routerProps.match.params)
-                  const index = this.state.bookmarks.findIndex(bookmark => bookmark.title.toUpperCase() === routerProps.match.params.title.toUpperCase())
-                  if (index >= 0) {
-                    const bm = this.state.bookmarks[index]
-                    return ( <Bookmark key={bm._id} {...bm} remove={ this.remove } /> )
-                  }
-                  return <p>Bookmark not found</p>
-                }} />
-            </ Fragment>
-              </ Router>
             </ div>
           ) : (
             <SignIn loginError={this.state.loginError} handleSignIn={this.handleSignIn} />
           )
         }
+        <Fragment>
+
+            <Route exact path="/" component={ Home } />
+
+            <Route exact path="/bookmarks" render={() => ( <Bookmarks app={this} /> )} />
+
+          <Route path="/bookmarks/:title" render={(routerProps) => {
+            console.log(routerProps.match.params)
+            const index = this.state.bookmarks.findIndex(bookmark => bookmark.title.toUpperCase() === routerProps.match.params.title.toUpperCase())
+            if (index >= 0) {
+              const bm = this.state.bookmarks[index]
+              return ( <Bookmark key={bm._id} {...bm} remove={ this.remove } /> )
+            }
+            return <p>Bookmark not found</p>
+          }} />
+      </ Fragment>
         </div>
+        </ Router>
+ 
     )
   }
 }
