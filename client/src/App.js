@@ -4,7 +4,6 @@ import Bookmarks from './components/Bookmarks'
 import Bookmark from './components/Bookmark'
 import SignIn from './components/SignIn'
 import { api, setJwt } from './api/init'
-import axios from 'axios';
 import decodeJWT from 'jwt-decode'
 import Home from './components/Home'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -42,7 +41,7 @@ class App extends Component {
 
   async componentDidMount() {
     try {
-        const bookmarks = await axios.get(
+        const bookmarks = await api.get(
         '/bookmarks'
     )
     this.setState( { 
@@ -58,7 +57,7 @@ class App extends Component {
   remove = (id) => {
     const index = this.state.bookmarks.findIndex(bookmark => bookmark._id === id)
     if (index >= 0) {
-      axios.delete(`/bookmarks/${id}`).then( () => {
+      api.delete(`/bookmarks/${id}`).then( () => {
         const bookmarks = [...this.state.bookmarks]
         bookmarks.splice(index, 1)
         this.setState( { bookmarks })
